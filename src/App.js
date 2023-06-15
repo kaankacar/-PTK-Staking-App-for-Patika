@@ -1,25 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { UseEthersProvider, Account } from 'ethers-react';
+import TokenInfo from './components/TokenInfo.js';
+import ConnectWalletButton from './components/ConnectWalletButton.js';
+import StakeButton from './components/StakeButton.js';
+import ClaimRewardsButton from './components/ClaimRewards.js';
+import WithdrawButton from './components/Withdraw.js';
+import AirdropButton from './components/Airdrop.js';
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <UseEthersProvider>
+      <div>
+        <h1>PatikaToken Staking Page</h1>
+        <Account
+          render={(account) => (
+            <div>
+              <p>Connected Address: {account}</p>
+              <ConnectWalletButton />
+            </div>
+          )}
+        />
+        <TokenInfo />
+        <StakeButton />
+        <ClaimRewardsButton />
+        <WithdrawButton />
+        <AirdropButton />
+      </div>
+    </UseEthersProvider>
   );
-}
+};
 
 export default App;
