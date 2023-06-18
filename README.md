@@ -1,70 +1,50 @@
-# Getting Started with Create React App
+# Patika's BNB Chain Staking App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is a staking app for a smart contract deployed on the BNB Chain. The app allows users to connect their wallets using MetaMask and perform various actions such as claiming airdrops, staking tokens, and withdrawing rewards.
 
-## Available Scripts
+## Getting Started
 
-In the project directory, you can run:
+To use the app, follow these steps:
 
-### `npm start`
+1. Install MetaMask extension for your browser if you haven't already.
+2. Clone the repository to your local machine.
+3. Install the necessary dependencies by running the command `npm install` in the project directory.
+4. Start the development server with `npm start`.
+5. Open the app in your browser at [http://localhost:3000](http://localhost:3000).
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Features
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- Connect to Web3: Click the "Connect to Web3" button to connect your MetaMask wallet to the app.
+- Airdrop: Claim the airdrop of 100 PTK tokens by clicking the "Claim Airdrop (100 $PTK)" button.
+- Staking: Enter the desired amount of tokens to stake in the input field and click the "Stake" button to stake the tokens.
+- Withdraw: Click the "Claim Rewards and Unstake" button to withdraw your rewards and unstake your tokens.
 
-### `npm test`
+## Contract Information
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+The app provides information about the contract:
 
-### `npm run build`
+- Total Token Supply: The total supply of $PTK.
+- Contract Balance: The balance of $PTK tokens in the contract.
+- Wallet Balance: The balance of $PTK tokens in your connected wallet.
+- Staked Amount: The amount of tokens currently staked by the user.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## $PTK Token Information
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- $PTK is an ERC-20 token based on the Binance Smart Chain (BNB).
+- Symbol: $PTK
+- The staking rewards are currently set at 1% per day.
+- The contract address used in the app is: `0xdb7CA9F0b7687687A01C134CF9b8F5D3eC7Bf3eA`. 
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Dependencies
 
-### `npm run eject`
+The app uses the following dependencies:
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+- React:
+- Web3.js
+- MetaMask
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Make sure to have these dependencies installed before running the app.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Contributing
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Contributions are welcome! If you find any issues or have suggestions for improvement, please open an issue or submit a pull request.
