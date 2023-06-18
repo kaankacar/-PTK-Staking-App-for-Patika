@@ -13,7 +13,7 @@ const ContractComponent = () => {
   const [walletBalance, setWalletBalance] = useState("");
   const [stakedAmount, setStakedAmount] = useState("");
 
-  const contractAddress = "0xdb7CA9F0b7687687A01C134CF9b8F5D3eC7Bf3eA"; // Değiştirilen kısım
+  const contractAddress = "0xdb7CA9F0b7687687A01C134CF9b8F5D3eC7Bf3eA"; 
   const abi = [
     {
       inputs: [],
@@ -404,21 +404,17 @@ const ContractComponent = () => {
   const connectToWeb3 = async () => {
     if (window.ethereum) {
       try {
-        // Request account access
         const accounts = await window.ethereum.request({
           method: "eth_requestAccounts",
         });
         setAccount(accounts[0]);
 
-        // Get web3 instance
         const web3 = new Web3(window.ethereum);
         setWeb3(web3);
 
-        // Get contract instance
         const contract = new web3.eth.Contract(abi, contractAddress);
         setContract(contract);
 
-        // Set connected flag
         setConnected(true);
         await retrieveData();
       } catch (error) {
