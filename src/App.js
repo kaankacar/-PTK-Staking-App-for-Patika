@@ -399,7 +399,7 @@ const ContractComponent = () => {
 
   useEffect(() => {
     connectToWeb3();
-  }, []);
+  });
 
   const connectToWeb3 = async () => {
     if (window.ethereum) {
