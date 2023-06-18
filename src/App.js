@@ -7,16 +7,103 @@ const ContractComponent = () => {
   const [account, setAccount] = useState(null);
   const [connected, setConnected] = useState(false);
   const [stakeAmount, setStakeAmount] = useState('');
-  const [totalSupply, setTotalSupply] = useState('');
+  const [totalSupply, setTotalSupply] = useState('1,000,000 PTK');
   const [contractBalance, setContractBalance] = useState('');
   const [walletBalance, setWalletBalance] = useState('');
+  const [stakedAmount, setStakedAmount] = useState('');
 
-  const contractAddress = '0x7767d03fA08cFebd7cc9C78C84877eC09d0f902E';
+  const contractAddress = '0xdb7CA9F0b7687687A01C134CF9b8F5D3eC7Bf3eA'; // Değiştirilen kısım
   const abi = [
     {
       "inputs": [],
       "name": "airdrop",
       "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "spender",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "approve",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "claimRewardsAndUnstake",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "spender",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "addedValue",
+          "type": "uint256"
+        }
+      ],
+      "name": "increaseAllowance",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "renounceOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "to",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "transfer",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
       "stateMutability": "nonpayable",
       "type": "function"
     },
@@ -59,37 +146,6 @@ const ContractComponent = () => {
         },
         {
           "internalType": "uint256",
-          "name": "amount",
-          "type": "uint256"
-        }
-      ],
-      "name": "approve",
-      "outputs": [
-        {
-          "internalType": "bool",
-          "name": "",
-          "type": "bool"
-        }
-      ],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "claimReward",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "spender",
-          "type": "address"
-        },
-        {
-          "internalType": "uint256",
           "name": "subtractedValue",
           "type": "uint256"
         }
@@ -106,28 +162,23 @@ const ContractComponent = () => {
       "type": "function"
     },
     {
+      "anonymous": false,
       "inputs": [
         {
+          "indexed": true,
           "internalType": "address",
-          "name": "spender",
+          "name": "previousOwner",
           "type": "address"
         },
         {
-          "internalType": "uint256",
-          "name": "addedValue",
-          "type": "uint256"
+          "indexed": true,
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
         }
       ],
-      "name": "increaseAllowance",
-      "outputs": [
-        {
-          "internalType": "bool",
-          "name": "",
-          "type": "bool"
-        }
-      ],
-      "stateMutability": "nonpayable",
-      "type": "function"
+      "name": "OwnershipTransferred",
+      "type": "event"
     },
     {
       "inputs": [
@@ -139,30 +190,6 @@ const ContractComponent = () => {
       ],
       "name": "stake",
       "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "to",
-          "type": "address"
-        },
-        {
-          "internalType": "uint256",
-          "name": "amount",
-          "type": "uint256"
-        }
-      ],
-      "name": "transfer",
-      "outputs": [
-        {
-          "internalType": "bool",
-          "name": "",
-          "type": "bool"
-        }
-      ],
       "stateMutability": "nonpayable",
       "type": "function"
     },
@@ -237,24 +264,6 @@ const ContractComponent = () => {
       "inputs": [
         {
           "internalType": "address",
-          "name": "recipient",
-          "type": "address"
-        },
-        {
-          "internalType": "uint256",
-          "name": "amount",
-          "type": "uint256"
-        }
-      ],
-      "name": "transferTokens",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
           "name": "owner",
           "type": "address"
         },
@@ -308,19 +317,26 @@ const ContractComponent = () => {
       "type": "function"
     },
     {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "account",
-          "type": "address"
-        }
-      ],
-      "name": "isStaked",
+      "inputs": [],
+      "name": "getTotalStakedTokens",
       "outputs": [
         {
-          "internalType": "bool",
+          "internalType": "uint256",
           "name": "",
-          "type": "bool"
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getTotalTokenSupply",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
         }
       ],
       "stateMutability": "view",
@@ -334,6 +350,19 @@ const ContractComponent = () => {
           "internalType": "string",
           "name": "",
           "type": "string"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
         }
       ],
       "stateMutability": "view",
@@ -368,156 +397,156 @@ const ContractComponent = () => {
   ];
 
   useEffect(() => {
-    const init = async () => {
-      // Connect to MetaMask
-      if (window.ethereum) {
-        try {
-          const provider = new Web3(window.ethereum);
-          await window.ethereum.enable();
-          setWeb3(provider);
-          setConnected(true);
-        } catch (error) {
-          console.error('Error connecting to MetaMask:', error);
-        }
-      }
-    };
-
-    init();
+    connectToWeb3();
   }, []);
 
-  useEffect(() => {
-    if (web3) {
-      // Load contract
-      const contractInstance = new web3.eth.Contract(abi, contractAddress);
-      setContract(contractInstance);
-
-      // Get current account
-      web3.eth.getAccounts().then(accounts => {
-        if (accounts.length > 0) {
-          setAccount(accounts[0]);
-        }
-      });
-
-      // Get total supply
-      contractInstance.methods.totalSupply().call().then(supply => {
-        setTotalSupply(supply);
-      });
-
-      // Get contract balance
-      web3.eth.getBalance(contractAddress).then(balance => {
-        setContractBalance(balance);
-      });
-    }
-  }, [web3]);
-
-  useEffect(() => {
-    if (web3 && account) {
-      // Get wallet balance
-      web3.eth.getBalance(account).then(balance => {
-        setWalletBalance(balance);
-      });
-    }
-  }, [web3, account]);
-
-  const connectWallet = async () => {
-    if (!connected) {
+  const connectToWeb3 = async () => {
+    if (window.ethereum) {
       try {
-        await window.ethereum.enable();
+        // Request account access
+        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+        setAccount(accounts[0]);
+  
+        // Get web3 instance
+        const web3 = new Web3(window.ethereum);
+        setWeb3(web3);
+  
+        // Get contract instance
+        const contract = new web3.eth.Contract(abi, contractAddress);
+        setContract(contract);
+  
+        // Set connected flag
         setConnected(true);
+        await retrieveData();
       } catch (error) {
-        console.error('Error connecting to MetaMask:', error);
+        console.error(error);
       }
     } else {
-      // Disconnect wallet
-      web3.currentProvider.disconnect();
-      setConnected(false);
-    }
-  };
-
-  const handleStake = async () => {
-    if (contract && account && stakeAmount !== '') {
-      try {
-        // Dönüşüm işlemi: stakeAmount'i büyük bir sayıya çeviriyoruz
-        const stakeValue = web3.utils.toWei(stakeAmount, 'ether');
-  
-        // Perform stake transaction
-        await contract.methods.stake(stakeValue).send({ from: account });
-        alert('Stake successful!');
-        setStakeAmount('');
-      } catch (error) {
-        console.error('Stake error:', error);
-        alert('Stake failed!');
-      }
-    }
-  };
-
-  const handleClaimRewards = async () => {
-    if (contract && account) {
-      try {
-        // Perform claim rewards transaction
-        await contract.methods.claimReward().send({ from: account });
-        alert('Claim rewards successful!');
-      } catch (error) {
-        console.error('Claim rewards error:', error);
-        alert('Claim rewards failed!');
-      }
-    }
-  };
-
-  const handleWithdraw = async () => {
-    if (contract && account) {
-      try {
-        // Perform withdraw transaction
-        await contract.methods.withdraw().send({ from: account });
-        alert('Withdraw successful!');
-      } catch (error) {
-        console.error('Withdraw error:', error);
-        alert('Withdraw failed!');
-      }
+      console.log('Please install MetaMask to connect your wallet');
     }
   };
   
 
+  const retrieveData = async () => {
+    await getTotalSupply();
+    await getContractBalance();
+    await getWalletBalance();
+    await getStakedAmount();
+  };
+
+  const getTotalSupply = async () => {
+    if (contract) {
+      try {
+        const supply = await contract.methods.getTotalTokenSupply().call();
+        setTotalSupply(supply.toString());
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  };
+
+  const getContractBalance = async () => {
+    if (contract) {
+      try {
+        const balance = await contract.methods.balanceOf(contractAddress).call();
+        setContractBalance(balance.toString());
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  };
+
+  const getWalletBalance = async () => {
+    if (contract && account) {
+      try {
+        const balance = await contract.methods.balanceOf(account).call();
+        setWalletBalance(balance.toString());
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  };
+
+  const formatTokenAmount = (amount) => {
+    const decimals = 18;
+    const formattedAmount = (amount / 10 ** decimals).toLocaleString('en-US');
+    return formattedAmount;
+  };
+
+  const getStakedAmount = async () => {
+    if (contract && account) {
+      try {
+        const amount = await contract.methods.getTotalStakedTokens().call();
+        setStakedAmount(amount.toString());
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  };
 
   const handleAirdrop = async () => {
     if (contract && account) {
       try {
-        // Perform airdrop transaction
         await contract.methods.airdrop().send({ from: account });
-        alert('Airdrop successful!');
+        await retrieveData();
       } catch (error) {
-        console.error('Airdrop error:', error);
-        alert('Airdrop failed!');
+        console.error(error);
+      }
+    }
+  };
+
+  const handleStake = async () => {
+    if (contract && account && stakeAmount) {
+      try {
+        const amount = web3.utils.toWei(stakeAmount.toString(), 'ether');
+        await contract.methods.stake(amount).send({ from: account });
+        await retrieveData();
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  };
+  
+  
+
+  const handleWithdraw = async () => {
+    if (contract && account) {
+      try {
+        await contract.methods.claimRewardsAndUnstake().send({ from: account });
+        await retrieveData();
+      } catch (error) {
+        console.error(error);
       }
     }
   };
 
   return (
     <div>
-      <button onClick={connectWallet}>
-        {connected ? 'Disconnect Wallet' : 'Connect Wallet'}
-      </button>
-      <br />
-      {connected && (
+      {connected ? (
         <div>
-          <h3>PTK Total Supply: {totalSupply}</h3>
-          <h3>Contract Balance: {contractBalance}</h3>
-          <h3>Wallet Balance: {walletBalance}</h3>
-          <h3>Staked Amount: {stakeAmount}</h3>
-          <br />
-          <label>
-            Stake Amount:
-            <input
-              type="text"
-              value={stakeAmount}
-              onChange={e => setStakeAmount(e.target.value)}
-            />
-          </label>
+          <h2>Contract Information</h2>
+          <p>Total Token Supply: {formatTokenAmount(totalSupply)}</p>
+          <p>Contract Balance: {formatTokenAmount(contractBalance)}</p>
+          <p>Wallet Balance: {formatTokenAmount(walletBalance)}</p>
+          <p>Staked Amount: {formatTokenAmount(stakedAmount)}</p>
+
+          <h2>Airdrop</h2>
+          <button onClick={handleAirdrop}>Claim Airdrop</button>
+
+          <h2>Staking</h2>
+          <input
+            type="text"
+            placeholder="Enter stake amount"
+            value={stakeAmount}
+            onChange={(e) => setStakeAmount(e.target.value)}
+          />
           <button onClick={handleStake}>Stake</button>
-          <button onClick={handleClaimRewards}>Claim Rewards</button>
-          <button onClick={handleWithdraw}>Withdraw</button>
-          <button onClick={handleAirdrop}>Airdrop</button>
+
+          <h2>Withdraw</h2>
+          <button onClick={handleWithdraw}>Withdraw Staked Tokens</button>
         </div>
+      ) : (
+        <button onClick={connectToWeb3}>Connect to Web3</button>
       )}
     </div>
   );
